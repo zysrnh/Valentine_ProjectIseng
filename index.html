@@ -4,170 +4,218 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Envelope Letter</title>
 
-<title>Valentine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
-
-/* BACKGROUND */
-body {
-    background: linear-gradient(135deg,#fb7185,#f9a8d4);
-    overflow: hidden;
+:root{
+  --primary: white;
+  --bg-color: #254336;
+  --bg-envelope-color: #f5edd1;
+  --envelope-tab: #ecdeb8;
+  --envelope-cover: #e6cfa7;
+  --shadow-color: #1c1c1c;
+  --heart-color: #c2465d;
 }
 
-/* LOVE CONTAINER */
-#love-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(135deg,#fb7185,#f9a8d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.love {
-    position: absolute;
-    top: -60px;
-    animation: fall linear infinite;
-    opacity: 0.85;
+/* LOVE RAIN */
+#love-container{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+.love{
+  position: absolute;
+  top: -60px;
+  animation: fall linear infinite;
+  opacity: .85;
+}
+@keyframes fall{
+  to{ transform: translateY(110vh); }
 }
 
-@keyframes fall {
-    to {
-        transform: translateY(110vh);
-    }
+.container {
+  height: 100vh;
+  display: grid;
+  place-items: center;
 }
 
-/* ENVELOPE */
-.envelope {
-    position: relative;
-    width: 260px;
-    height: 160px;
-    background: #f43f5e;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    transition: transform .3s ease, opacity 1s ease;
-    opacity: 0;
+.container > .envelope-wrapper {
+  background: var(--bg-envelope-color);
+  box-shadow: 0 0 40px var(--shadow-color);
 }
 
-.show-envelope {
-    opacity: 1;
+.envelope-wrapper > .envelope {
+  position: relative;
+  width: 350px;
+  height: 250px;
 }
 
-.envelope:hover {
-    transform: translateY(-6px);
+.envelope-wrapper > .envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  border-top: 130px solid var(--envelope-tab);
+  border-right: 175px solid transparent;
+  border-left: 175px solid transparent;
+  transform-origin: top;
+  transition: all 0.5s ease-in-out 0.7s;
 }
 
-/* flap */
-.flap {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: #fb7185;
-    clip-path: polygon(0 0, 50% 60%, 100% 0);
-    transform-origin: top;
-    transition: transform .6s ease;
+.envelope-wrapper > .envelope::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  border-top: 130px solid transparent;
+  border-right: 175px solid var(--envelope-cover);
+  border-bottom: 120px solid var(--envelope-cover);
+  border-left: 175px solid var(--envelope-cover);
 }
 
-/* letter */
-.letter {
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    width: 80%;
-    height: 110px;
-    background: #fff1f2;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #881337;
-    font-weight: 500;
-    transform: translateY(75%);
-    transition: transform .6s ease;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+.sincerely {
+  text-align: right;
 }
 
-.open .flap {
-    transform: rotateX(180deg);
+.envelope > .letter {
+  position: absolute;
+  right: 20%;
+  bottom: 0;
+  width: 54%;
+  height: 80%;
+  background: var(--primary);
+  text-align: center;
+  transition: all 1s ease-in-out;
+  box-shadow: 0 0 5px var(--shadow-color);
+  padding: 20px 10px;
 }
 
-.open .letter {
-    transform: translateY(-45%);
+.envelope > .letter > .text {
+  font-family: "Caveat", cursive;
+  color: black;
+  text-align: justify;
+  font-size: 11px;
+  padding-right: 2px;
 }
 
+.text strong {
+  font-size: 12px;
+}
+
+.heart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  background: var(--heart-color);
+  z-index: 4;
+  transform: translate(-50%, -20%) rotate(45deg);
+  transition: transform 0.5s ease-in-out 1s;
+  box-shadow: 0 1px 6px var(--shadow-color);
+  cursor: pointer;
+}
+
+.heart:before, 
+.heart:after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: var(--heart-color);
+  border-radius: 50%;
+}
+
+.heart:before {
+  top: -7.5px;
+}
+
+.heart:after {
+  right: 7.5px;
+}
+
+.flap > .envelope:before {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+.flap > .envelope > .letter {
+  bottom: 100px;
+  transform: scale(1.5);
+  transition-delay: 1s;
+}
+
+.flap > .heart {
+  transform: rotate(90deg);
+  transition-delay: 0.4s;
+}
 </style>
 </head>
 
-<body class="h-screen flex items-center justify-center">
+<body>
 
-<!-- LOVE RAIN -->
 <div id="love-container"></div>
 
-<!-- ENVELOPE -->
-<div id="envelope" class="envelope">
-    <div class="flap"></div>
-    <div class="letter">
-        Happy Valentine ❤️
+<div class='container'>
+  <div class='envelope-wrapper'>
+    <div class='envelope'>
+      <div class='letter'>
+        <div class='text'>
+          <strong>Dear Riaa,</strong>
+          <p>
+            Happy Valentine's Day! I love you so much and I'm so lucky to have you in my life. Maaf yaa sayangg kalau ga sempat kasih kamu hadiah. akuu takut kamuu expetasi kamuu nggak terpenuhi. taapi besokk kitaa mainn
+          </p>
+          <p class='sincerely'>
+            Sincerely, Zaaki &lt;3
+          </p>
+        </div>
+      </div>
     </div>
+    <div class='heart'></div>
+  </div>
 </div>
 
 <script>
+const envelope = document.querySelector('.envelope-wrapper');
+envelope.addEventListener('click', () => {
+  envelope.classList.toggle('flap');
+});
 
-/* ===== LOVE RAIN ===== */
+/* LOVE RAIN */
+const loveContainer = document.getElementById("love-container");
 
-const container = document.getElementById("love-container");
+function createLove(){
+  const love = document.createElement("img");
+  love.src = "Asset/Love/PixelLove.png";
+  love.classList.add("love");
 
-function createLove() {
-    const love = document.createElement("img");
+  love.style.width = (Math.random() * 40 + 30) + "px";
+  love.style.left = Math.random() * 100 + "vw";
 
-    love.src = "Asset/Love/PixelLove.png";
-    love.classList.add("love");
+  const duration = Math.random() * 5 + 5;
+  love.style.animationDuration = duration + "s";
 
-    // ukuran lebih natural (kecil banyak, besar sedikit)
-    let size;
-    if (Math.random() < 0.7) {
-        size = Math.random() * 30 + 30;
-    } else {
-        size = Math.random() * 40 + 60;
-    }
-
-    love.style.width = size + "px";
-
-    love.style.left = Math.random() * 100 + "vw";
-
-    const duration = Math.random() * 5 + 5;
-    love.style.animationDuration = duration + "s";
-
-    container.appendChild(love);
-
-    setTimeout(() => {
-        love.remove();
-    }, duration * 1000);
+  loveContainer.appendChild(love);
+  setTimeout(() => love.remove(), duration * 1000);
 }
 
 setInterval(createLove, 400);
-
-
-/* ===== ENVELOPE ENTRANCE ===== */
-
-const envelope = document.getElementById("envelope");
-
-setTimeout(() => {
-    envelope.classList.add("show-envelope");
-}, 1200);
-
-
-/* ===== OPEN ENVELOPE ===== */
-
-envelope.addEventListener("click", function(){
-    this.classList.toggle("open");
-});
-
 </script>
 
 </body>
