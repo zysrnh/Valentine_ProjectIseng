@@ -119,6 +119,7 @@ body {
 <script>
 
 /* ===== LOVE RAIN ===== */
+
 const container = document.getElementById("love-container");
 
 function createLove() {
@@ -127,7 +128,14 @@ function createLove() {
     love.src = "Asset/Love/PixelLove.png";
     love.classList.add("love");
 
-    const size = Math.random() * 30 + 20;
+    // ukuran lebih natural (kecil banyak, besar sedikit)
+    let size;
+    if (Math.random() < 0.7) {
+        size = Math.random() * 30 + 30;
+    } else {
+        size = Math.random() * 40 + 60;
+    }
+
     love.style.width = size + "px";
 
     love.style.left = Math.random() * 100 + "vw";
@@ -146,6 +154,7 @@ setInterval(createLove, 400);
 
 
 /* ===== ENVELOPE ENTRANCE ===== */
+
 const envelope = document.getElementById("envelope");
 
 setTimeout(() => {
@@ -154,6 +163,7 @@ setTimeout(() => {
 
 
 /* ===== OPEN ENVELOPE ===== */
+
 envelope.addEventListener("click", function(){
     this.classList.toggle("open");
 });
