@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Envelope Letter</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --primary: white;
-  --bg-color: #254336;
   --bg-envelope-color: #f5edd1;
   --envelope-tab: #ecdeb8;
   --envelope-cover: #e6cfa7;
@@ -21,22 +19,21 @@
   --heart-color: #c2465d;
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background: linear-gradient(135deg,#fb7185,#f9a8d4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: "Gamja Flower", cursive;
+  background: linear-gradient(135deg, #fb7185, #f9a8d4);
   overflow: hidden;
+  height: 100vh;
 }
 
-/* LOVE RAIN */
+/* ================= LOVE RAIN ================= */
 #love-container{
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 0;
 }
 .love{
   position: absolute;
@@ -48,175 +45,326 @@ body{
   to{ transform: translateY(110vh); }
 }
 
-.container {
+/* ================= ENTRANCE ================= */
+#entrance{
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #fb7185, #f9a8d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.7s ease;
+}
+#entrance.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* CARD */
+.card{
+  background: rgba(255, 220, 225, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 32px;
+  padding: 36px 44px 40px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(225,29,72,0.15), 0 2px 12px rgba(0,0,0,0.07);
+  max-width: 340px;
+  width: 88vw;
+  position: relative;
+  animation: cardPop 0.6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes cardPop{
+  from{ opacity:0; transform:scale(0.85) translateY(24px); }
+  to  { opacity:1; transform:scale(1)    translateY(0); }
+}
+.card::before{ content:"♥"; position:absolute; top:14px; left:18px; font-size:1rem; color:rgba(225,29,72,0.25); pointer-events:none; }
+.card::after { content:"♥"; position:absolute; bottom:14px; right:18px; font-size:1rem; color:rgba(225,29,72,0.25); pointer-events:none; }
+
+/* Snoopy */
+.snoopy-wrap{
+  position: relative;
+  height: 115px;
+  margin-bottom: 10px;
+}
+#snoopyHappy{
+  width: 105px;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 6px 14px rgba(225,29,72,0.2));
+  transition: opacity 0.35s ease;
+}
+#snoopySad{
+  width: 105px;
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  filter: drop-shadow(0 6px 14px rgba(225,29,72,0.2));
+  transition: opacity 0.35s ease;
+}
+
+.question{
+  font-size: 1.85rem;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(185,28,60,0.2);
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+#dynamicText{
+  font-size: 1.15rem;
+  color: #ffe4e6;
+  height: 30px;
+  line-height: 30px;
+  transition: opacity 0.25s ease;
+  opacity: 0;
+  margin-bottom: 18px;
+}
+
+.btn-row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+#yesBtn{
+  font-family: "Gamja Flower", cursive;
+  font-size: 1.2rem;
+  background: #e11d48;
+  color: white;
+  border: none;
+  padding: 12px 38px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(225,29,72,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#yesBtn:hover{
+  transform: scale(1.07);
+  box-shadow: 0 6px 22px rgba(225,29,72,0.55);
+}
+
+/* No — normal flow, kabur pakai translate smooth */
+#noBtn{
+  font-family: "Gamja Flower", cursive;
+  font-size: 1.2rem;
+  background: white;
+  color: #e11d48;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  /* translate untuk kabur, transition supaya smooth */
+  transition: transform 0.3s ease;
+  transform: translate(0px, 0px);
+  position: relative;
+  z-index: 2;
+}
+
+/* ================= ENVELOPE ================= */
+.container{
   height: 100vh;
   display: grid;
   place-items: center;
 }
-
-.container > .envelope-wrapper {
+.container > .envelope-wrapper{
   background: var(--bg-envelope-color);
   box-shadow: 0 0 40px var(--shadow-color);
 }
-
-.envelope-wrapper > .envelope {
+.envelope-wrapper > .envelope{
   position: relative;
   width: 350px;
   height: 250px;
 }
-
-.envelope-wrapper > .envelope::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  z-index: 2;
-  border-top: 130px solid var(--envelope-tab);
-  border-right: 175px solid transparent;
-  border-left: 175px solid transparent;
-  transform-origin: top;
-  transition: all 0.5s ease-in-out 0.7s;
+.envelope-wrapper > .envelope::before{
+  content:"";
+  position:absolute;
+  top:0; z-index:2;
+  border-top:130px solid var(--envelope-tab);
+  border-right:175px solid transparent;
+  border-left:175px solid transparent;
+  transform-origin:top;
+  transition:all 0.5s ease-in-out 0.7s;
 }
-
-.envelope-wrapper > .envelope::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  width: 0;
-  height: 0;
-  border-top: 130px solid transparent;
-  border-right: 175px solid var(--envelope-cover);
-  border-bottom: 120px solid var(--envelope-cover);
-  border-left: 175px solid var(--envelope-cover);
+.envelope-wrapper > .envelope::after{
+  content:"";
+  position:absolute;
+  z-index:2; width:0; height:0;
+  border-top:130px solid transparent;
+  border-right:175px solid var(--envelope-cover);
+  border-bottom:120px solid var(--envelope-cover);
+  border-left:175px solid var(--envelope-cover);
 }
-
-.sincerely {
-  text-align: right;
+.sincerely{ text-align:right; }
+.envelope > .letter{
+  position:absolute;
+  right:20%; bottom:0;
+  width:54%; height:80%;
+  background:var(--primary);
+  text-align:center;
+  transition:all 1s ease-in-out;
+  box-shadow:0 0 5px var(--shadow-color);
+  padding:20px 10px;
 }
-
-.envelope > .letter {
-  position: absolute;
-  right: 20%;
-  bottom: 0;
-  width: 54%;
-  height: 80%;
-  background: var(--primary);
-  text-align: center;
-  transition: all 1s ease-in-out;
-  box-shadow: 0 0 5px var(--shadow-color);
-  padding: 20px 10px;
+.envelope > .letter > .text{
+  font-family:"Caveat",cursive;
+  color:black;
+  text-align:justify;
+  font-size:11px;
+  padding-right:2px;
 }
-
-.envelope > .letter > .text {
-  font-family: "Caveat", cursive;
-  color: black;
-  text-align: justify;
-  font-size: 11px;
-  padding-right: 2px;
+.text strong{ font-size:12px; }
+.heart{
+  position:absolute;
+  top:50%; left:50%;
+  width:15px; height:15px;
+  background:var(--heart-color);
+  z-index:4;
+  transform:translate(-50%,-20%) rotate(45deg);
+  transition:transform 0.5s ease-in-out 1s;
+  box-shadow:0 1px 6px var(--shadow-color);
+  cursor:pointer;
 }
-
-.text strong {
-  font-size: 12px;
+.heart:before,.heart:after{
+  content:"";
+  position:absolute;
+  width:15px; height:15px;
+  background-color:var(--heart-color);
+  border-radius:50%;
 }
-
-.heart {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 15px;
-  height: 15px;
-  background: var(--heart-color);
-  z-index: 4;
-  transform: translate(-50%, -20%) rotate(45deg);
-  transition: transform 0.5s ease-in-out 1s;
-  box-shadow: 0 1px 6px var(--shadow-color);
-  cursor: pointer;
-}
-
-.heart:before, 
-.heart:after {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  background-color: var(--heart-color);
-  border-radius: 50%;
-}
-
-.heart:before {
-  top: -7.5px;
-}
-
-.heart:after {
-  right: 7.5px;
-}
-
-.flap > .envelope:before {
-  transform: rotateX(180deg);
-  z-index: 0;
-}
-
-.flap > .envelope > .letter {
-  bottom: 100px;
-  transform: scale(1.5);
-  transition-delay: 1s;
-}
-
-.flap > .heart {
-  transform: rotate(90deg);
-  transition-delay: 0.4s;
-}
+.heart:before{ top:-7.5px; }
+.heart:after { right:7.5px; }
+.flap > .envelope:before{ transform:rotateX(180deg); z-index:0; }
+.flap > .envelope > .letter{ bottom:100px; transform:scale(1.5); transition-delay:1s; }
+.flap > .heart{ transform:rotate(90deg); transition-delay:0.4s; }
 </style>
 </head>
-
 <body>
 
 <div id="love-container"></div>
 
-<div class='container'>
-  <div class='envelope-wrapper'>
-    <div class='envelope'>
-      <div class='letter'>
-        <div class='text'>
+<div id="entrance">
+  <div class="card" id="card">
+    <div class="snoopy-wrap">
+      <img id="snoopyHappy" src="Asset/Snoopy/Snoopy.png">
+      <img id="snoopySad"   src="Asset/Snoopy/SadSnopy.png">
+    </div>
+    <p class="question">Will you be<br>my Valentine? 💌</p>
+    <p id="dynamicText">&nbsp;</p>
+    <div class="btn-row">
+      <button id="yesBtn">Yes ❤️</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="envelope-wrapper">
+    <div class="envelope">
+      <div class="letter">
+        <div class="text">
           <strong>Dear Riaa,</strong>
-          <p>
-            Happy Valentine's Day! I love you so much and I'm so lucky to have you in my life. Maaf yaa sayangg kalau ga sempat kasih kamu hadiah. akuu takut kamuu expetasi kamuu nggak terpenuhi. taapi besokk kitaa mainn
-          </p>
-          <p class='sincerely'>
-            Sincerely, Zaaki &lt;3
-          </p>
+          <p>Happy Valentine's Day ! Sayanggkuuu &lt;3</p>
+          <p class="sincerely">Sincerely, Zaaki &lt;3</p>
         </div>
       </div>
     </div>
-    <div class='heart'></div>
+    <div class="heart"></div>
   </div>
 </div>
 
 <script>
-const envelope = document.querySelector('.envelope-wrapper');
-envelope.addEventListener('click', () => {
-  envelope.classList.toggle('flap');
-});
-
-/* LOVE RAIN */
+/* ---- LOVE RAIN ---- */
 const loveContainer = document.getElementById("love-container");
-
 function createLove(){
   const love = document.createElement("img");
   love.src = "Asset/Love/PixelLove.png";
   love.classList.add("love");
-
-  love.style.width = (Math.random() * 40 + 30) + "px";
-  love.style.left = Math.random() * 100 + "vw";
-
-  const duration = Math.random() * 5 + 5;
-  love.style.animationDuration = duration + "s";
-
+  love.style.width = (Math.random()*40+30)+"px";
+  love.style.left  = Math.random()*100+"vw";
+  const dur = Math.random()*5+5;
+  love.style.animationDuration = dur+"s";
   loveContainer.appendChild(love);
-  setTimeout(() => love.remove(), duration * 1000);
+  setTimeout(()=>love.remove(), dur*1000);
+}
+setInterval(createLove, 400);
+
+/* ---- NO BTN ---- */
+const noBtn       = document.getElementById("noBtn");
+const dynamicText = document.getElementById("dynamicText");
+
+const sadMessages = [
+  "pleasee",
+];
+let msgIndex = 0;
+let escaped  = false;
+
+/* posisi translate saat ini */
+let curTX = 0;
+let curTY = 0;
+
+/* batas geser dari posisi awal — hanya sekitar card */
+const MAX_MOVE = 90;
+const FLEE_DIST = 100; /* jarak mulai lari */
+
+function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
+
+function showSadState(){
+  document.getElementById("snoopyHappy").style.opacity = "0";
+  document.getElementById("snoopySad").style.opacity   = "1";
+  dynamicText.style.opacity = "0";
+  setTimeout(()=>{
+    dynamicText.textContent = sadMessages[msgIndex % sadMessages.length];
+    dynamicText.style.opacity = "1";
+    msgIndex++;
+  }, 200);
 }
 
-setInterval(createLove, 400);
-</script>
+/* Klik pertama: aktifkan mode kabur + sad state */
+noBtn.addEventListener("click", ()=>{
+  if(!escaped){
+    escaped = true;
+    showSadState();
+  }
+});
 
+/* Cursor mendekat → geser smooth pakai translate */
+document.addEventListener("mousemove", (e)=>{
+  if(!escaped) return;
+
+  const r     = noBtn.getBoundingClientRect();
+  const btnCX = r.left + r.width  / 2;
+  const btnCY = r.top  + r.height / 2;
+  const dx    = btnCX - e.clientX;
+  const dy    = btnCY - e.clientY;
+  const dist  = Math.sqrt(dx*dx + dy*dy);
+
+  if(dist < FLEE_DIST){
+    /* arah lari = berlawanan dari cursor */
+    const angle = Math.atan2(dy, dx);
+    const step  = (FLEE_DIST - dist) * 0.5; /* makin dekat makin kencang */
+
+    curTX = clamp(curTX + Math.cos(angle) * step, -MAX_MOVE, MAX_MOVE);
+    curTY = clamp(curTY + Math.sin(angle) * step, -MAX_MOVE, MAX_MOVE);
+
+    noBtn.style.transform = `translate(${curTX}px, ${curTY}px)`;
+  }
+});
+
+/* ---- YES ---- */
+document.getElementById("yesBtn").addEventListener("click", ()=>{
+  document.getElementById("entrance").classList.add("hide");
+});
+
+/* ---- ENVELOPE ---- */
+document.querySelector(".envelope-wrapper").addEventListener("click", function(){
+  this.classList.toggle("flap");
+});
+</script>
 </body>
 </html>
